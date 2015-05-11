@@ -226,11 +226,11 @@ public class LoginActivity extends Activity {
                          **/
                         UserFunctions logout = new UserFunctions();
                         logout.logoutUser(getApplicationContext());
-                        db.addUser(json_user.getString(KEY_FULLNAME),json_user.getString(KEY_EMAIL),json_user.getString(KEY_USERNAME),json_user.getString(KEY_UID),json_user.getString(KEY_CREATED_AT), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS), json_user.getString(KEY_GENDER));
+                        db.addUser(json_user.getString(KEY_FULLNAME),json_user.getString(KEY_EMAIL),json_user.getString(KEY_USERNAME),json_user.getString(KEY_UID),json_user.getString(KEY_CREATED_AT), json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS));
                         /**
                          *If JSON array details are stored in SQlite it launches the User Panel.
                          **/
-                        Intent upanel = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent upanel = new Intent(getApplicationContext(), Main.class);
                         upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         pDialog.dismiss();
                         startActivity(upanel);

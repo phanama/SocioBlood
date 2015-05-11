@@ -41,7 +41,7 @@ public class ChangePassword extends Activity{
 
 
 
-    EditText newpass, verifynewpass, password1, password2;
+    EditText newpass, verifynewpass;
     TextView alert;
     Button changepass;
     Button cancel;

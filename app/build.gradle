@@ -8,8 +8,8 @@ android {
         applicationId "com.example.yudiandrean.socioblood"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 001
+        versionName "0.1"
     }
     buildTypes {
         release {

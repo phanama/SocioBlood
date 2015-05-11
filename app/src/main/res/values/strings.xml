@@ -4,6 +4,9 @@
     <string name="facebook_app_id">
               696343490477337
           </string>
+
+    <string name="twitter_consumer_key">uLY62iV2Gyc0FYin6RMede2ph</string>
+    <string name="twitter_consumer_secret">ixs5d15ExnJageamXjIw787Cw7iOnOy34y5Vjb3uTfmYfPC3ZD</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
