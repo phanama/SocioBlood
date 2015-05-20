@@ -14,4 +14,6 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_facebook">Login/Register via Facebook</string>
+    <string name="socioblood_welcome">Welcome to SocioBlood\nPlease Login/Register!</string>
 </resources>

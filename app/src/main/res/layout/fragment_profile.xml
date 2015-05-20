@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/grey_light">
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="8dp"
-        android:id="@+id/frame"
-        android:background="@color/dark">
+    android:background="@color/grey_light"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_margin="5dp"
+    android:id="@+id/frame">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -36,7 +30,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-
+                android:src="@drawable/noavatar"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"/>
@@ -45,7 +39,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="NoName"
                 android:maxLines="3"
                 android:singleLine="false"
                 android:id="@+id/name"
@@ -59,7 +52,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="null"
                 android:maxLines="3"
                 android:singleLine="false"
                 android:id="@+id/id"
@@ -71,7 +63,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:id="@+id/info"
                 android:padding="8dp"
                 android:layout_marginBottom="4dp"
@@ -80,6 +71,7 @@
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,20 +88,20 @@
                 android:text="Friends"
                 android:id="@+id/friends"
                 android:padding="8dp"
-                android:background="@color/dark"
+                android:background="@drawable/btn_back"
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:textColor="#ffffffff"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Share"
+                android:text="Profile"
                 android:id="@+id/share"
                 android:padding="8dp"
-                android:background="@color/dark"
+                android:background="@drawable/btn_back"
                 android:layout_weight="1"
                 android:textColor="#ffffffff"/>
         </LinearLayout>
-    </RelativeLayout>
 
-</ScrollView>
+
+</RelativeLayout>
