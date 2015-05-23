@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="bloodtypearray">
+        <item>O</item>
+        <item>A</item>
+        <item>B</item>
+        <item>AB</item>
+    </string-array>
+
+    <string-array name="rhesusarray">
+        <item>+</item>
+        <item>-</item>
+    </string-array>
+
+    <string-array name="genderarray">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+</resources>
