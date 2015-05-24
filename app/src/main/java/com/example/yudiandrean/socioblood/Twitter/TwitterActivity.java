@@ -73,10 +73,7 @@ public class TwitterActivity extends Activity {
 		final static String TwitterStreamURL = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=";
 
 
-		/**
-		 * Requisita o token de acesso para utilizar a api, passando na requisição as chaves de consumo da api.
-		 * @return um token de acesso à api em formato JSON ou null, caso tenha ocorrido um erro.
-		 */
+
 		private String authenticateApp(){
 
 			HttpURLConnection connect = null;
@@ -91,23 +88,19 @@ public class TwitterActivity extends Activity {
 				connect.setDoOutput(true);
 				connect.setDoInput(true);
 
-				// codificando as chaves de consumo da api com a codificação base64.
 				String accessCredentials = CONSUMER_KEY + ":" + CONSUMER_SECRET;
 				String authorize = "Basic " + Base64.encodeToString(accessCredentials.getBytes(), Base64.NO_WRAP);
 				String parametre = "grant_type=client_credentials";
 
-				// enviando as credenciais de acesso no cabeçalho da requisição
 				connect.addRequestProperty("Authorization", authorize);
 				connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 				connect.connect();
 
-				// enviando o parametro granty_type no corpo da requisição
 				os = connect.getOutputStream();
 				os.write(parametre.getBytes());
 				os.flush();
 				os.close();
 
-				// recuperando a resposta do servidor (token de acesso  em JSON - obrigatório para utilizar a api)
 				br = new BufferedReader(new InputStreamReader(connect.getInputStream()));
 				String linha;
 				result = new StringBuilder();
@@ -163,7 +156,7 @@ public class TwitterActivity extends Activity {
 					resposta.append(linha);
 				}
 
-				Log.d("Código resposta GET", String.valueOf(conexao.getResponseCode()));
+				Log.d("Codigo resposta GET", String.valueOf(conexao.getResponseCode()));
 				Log.d("Resposta JSON", resposta.toString());
 
 				JSONArray jsonArray = new JSONArray(resposta.toString());

@@ -1,4 +1,4 @@
-package com.example.yudiandrean.socioblood.library;
+package com.example.yudiandrean.socioblood.databases;
 
 /**
  * Author :Raj Amal
@@ -31,6 +31,7 @@ public class UserFunctions {
     private static String register_tag = "register";
     private static String forpass_tag = "forpass";
     private static String chgpass_tag = "chgpass";
+    private static String post_tag = "postreq";
 
 
     // constructor

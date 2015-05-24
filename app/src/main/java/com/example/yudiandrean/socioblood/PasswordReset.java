@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.yudiandrean.socioblood.library.UserFunctions;
+import com.example.yudiandrean.socioblood.databases.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;

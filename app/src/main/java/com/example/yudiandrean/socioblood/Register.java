@@ -12,7 +12,7 @@ package com.example.yudiandrean.socioblood;
         import android.os.AsyncTask;
         import android.os.Bundle;
         import android.view.View;
-        import android.widget.AdapterView;
+        import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.EditText;
@@ -20,8 +20,9 @@ package com.example.yudiandrean.socioblood;
         import android.widget.TextView;
         import android.widget.Toast;
 
-        import com.example.yudiandrean.socioblood.library.DatabaseHandler;
-        import com.example.yudiandrean.socioblood.library.UserFunctions;
+        import com.example.yudiandrean.socioblood.databases.DatabaseHandler;
+        import com.example.yudiandrean.socioblood.databases.SessionManager;
+        import com.example.yudiandrean.socioblood.databases.UserFunctions;
         import org.json.JSONException;
         import org.json.JSONObject;
 
@@ -36,7 +37,7 @@ public class Register extends Activity {
     /**
      *  JSON Response node names.
      **/
-
+    private static final String TAG = Register.class.getSimpleName();
 
     private static String KEY_SUCCESS = "success";
     private static String KEY_UID = "uid";
@@ -48,6 +49,7 @@ public class Register extends Activity {
     private static String KEY_RHESUS = "rhesus";
     private static String KEY_GENDER = "gender";
     private static String KEY_ERROR = "error";
+    private SessionManager session;
 
     /**
      * Defining layout items.
@@ -83,25 +85,112 @@ public class Register extends Activity {
         btnRegister = (Button) findViewById(R.id.register);
         registerErrorMsg = (TextView) findViewById(R.id.register_error);
 
+        //Blood type spinner
         inputBloodType = (Spinner) findViewById(R.id.bloodtype_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.bloodtypearray, android.R.layout.simple_spinner_item);
-        inputBloodType.setAdapter(adapter);
+        ArrayAdapter<String> bloodadapter = new ArrayAdapter<String>(Register.this, android.R.layout.simple_spinner_dropdown_item) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
 
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+                return v;
+            }
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+        };
+
+        bloodadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bloodadapter.add("O");
+        bloodadapter.add("A");
+        bloodadapter.add("B");
+        bloodadapter.add("AB");
+        bloodadapter.add("Blood Type");
+        inputBloodType.setAdapter(bloodadapter);
+        inputBloodType.setSelection(bloodadapter.getCount()); //display hint
+
+        //Rhesus spinner
         inputRhesus = (Spinner) findViewById(R.id.rhesus_spinner);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(
-                this, R.array.rhesusarray, android.R.layout.simple_spinner_item);
-        inputRhesus.setAdapter(adapter1);
+        ArrayAdapter<String> rhesusadapter = new ArrayAdapter<String>(Register.this, android.R.layout.simple_spinner_dropdown_item) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        rhesusadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        rhesusadapter.add("+");
+        rhesusadapter.add("-");
+        rhesusadapter.add("Rhesus");
+
+        inputRhesus.setAdapter(rhesusadapter);
+        inputRhesus.setSelection(rhesusadapter.getCount()); //display hint
 
         inputGender = (Spinner) findViewById(R.id.gender_spinner);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(
-                this, R.array.genderarray, android.R.layout.simple_spinner_item);
-        inputGender.setAdapter(adapter2);
+        ArrayAdapter<String> genderadapter = new ArrayAdapter<String>(Register.this, android.R.layout.simple_spinner_dropdown_item) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        genderadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderadapter.add("Male");
+        genderadapter.add("Female");
+        genderadapter.add("Gender");
+
+        inputGender.setAdapter(genderadapter);
+        inputGender.setSelection(genderadapter.getCount()); //display hint
+
+/**
+ * Gets spinner value
+ */
 
 
-        /**
-         * Gets spinner value
-         */
+
+        // Session manager
+        session = new SessionManager(getApplicationContext());
+
+        // Check if user is already logged in or not
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(Register.this,
+                    UserPanel.class);
+            startActivity(intent);
+            finish();
+        }
 
 /**
  * Button which Switches back to the login screen on clicked

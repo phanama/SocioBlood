@@ -41,27 +41,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <RelativeLayout
+        <LinearLayout
             style="@style/LoginFormContainer"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="1">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:text="@string/socioblood_welcome"
                 android:textSize = "20sp"
                 android:id="@+id/textView"
                 android:layout_gravity="start"
                 android:layout_alignParentTop="false"
-                android:textColor="#000000"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentBottom="false"
-                android:layout_alignParentStart="true" />
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginTop="20dip"
                 android:layout_below="@+id/textView"
                 android:hint="@string/prompt_id"
                 android:inputType="textEmailAddress"
@@ -82,84 +81,65 @@
                 android:textColor="#000000"/>
 
             <Button
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:text="Login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="LOGIN"
+                android:layout_marginTop="20dip"
                 android:id="@+id/login"
                 android:background="@drawable/btn_back"
-                android:textSize="13dp"
-                android:layout_margin="5dp"
+                android:textSize="20sp"
                 android:textColor="#ffffff"
-                android:layout_below="@+id/password"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentLeft="false"
-                android:clickable="true"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:text="Register"
-                android:id="@+id/registerbtn"
-                android:background="@drawable/btn_back"
-                android:layout_below="@+id/password"
-                android:layout_margin="5dp"
-                android:textSize="13dp"
-                android:textColor="#ffffff"
-                android:layout_alignParentLeft="true"
-                android:layout_alignWithParentIfMissing="false"
-                android:layout_alignParentTop="false"
-                android:clickable="true"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Forgot Password"
-                android:background="@drawable/btn_red_back"
-                android:id="@+id/passres"
-                android:layout_below="@+id/login"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentLeft="true"
-                android:textSize="13dp"
-                android:textColor="#000000"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <com.facebook.login.widget.LoginButton
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:text="@string/login_facebook"
-                android:id="@+id/facebook_login"
-                android:background="@drawable/btn_blue_back"
-                android:layout_margin="8dp"
-                android:textColor="#ffffffff"
-                android:layout_below="@+id/passres"
-                android:layout_centerInParent="true"
-                android:gravity="center_vertical|center_horizontal" />
+                android:clickable="true" />
 
 
             <com.twitter.sdk.android.core.identity.TwitterLoginButton
                 android:id="@+id/twitter_login_button"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/facebook_login"
-                android:layout_centerInParent="true"
+                android:layout_marginTop="10dip"
                 />
+
+            <com.facebook.login.widget.LoginButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_facebook"
+                android:id="@+id/facebook_login"
+                android:background="@drawable/btn_blue_back"
+                android:textColor="#ffffffff"
+                android:layout_marginTop="10dip"
+                android:layout_below="@+id/passres"/>
+
+            <Button
+
+                android:id="@+id/passres"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="@null"
+                android:text="@string/btn_link_to_forgotpass"
+                android:textAllCaps="false"
+                android:textColor="@color/dark"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/registerbtn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:background="@null"
+                android:text="@string/btn_link_to_register"
+                android:textAllCaps="false"
+                android:textColor="@color/dark"
+                android:textSize="15dp" />
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="56dp"
                 android:id="@+id/loginErrorMsg"
-                android:textColor="#000000"
-                android:layout_below="@+id/twitter_login_button"
-                android:layout_alignParentLeft="true"/>
+                android:textColor="#000000"/>
 
 
-
-
-
-
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
 </merge>

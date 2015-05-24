@@ -1,4 +1,4 @@
-package com.example.yudiandrean.socioblood.library;
+package com.example.yudiandrean.socioblood.databases;
 
 /**
  * Created by yudiandrean on 5/9/15.

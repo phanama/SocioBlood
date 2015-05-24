@@ -5,15 +5,27 @@
               696343490477337
           </string>
 
+
+
+
+
     <string name="twitter_consumer_key">uLY62iV2Gyc0FYin6RMede2ph</string>
     <string name="twitter_consumer_secret">ixs5d15ExnJageamXjIw787Cw7iOnOy34y5Vjb3uTfmYfPC3ZD</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_register">REGISTER</string>
+    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="btn_link_to_login">Already registred! Login Me.</string>
+    <string name="btn_logout">LOGOUT</string>
 
 
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_facebook">Login/Register via Facebook</string>
-    <string name="socioblood_welcome">Welcome to SocioBlood\nPlease Login/Register!</string>
+    <string name="socioblood_welcome">Welcome to SocioBlood\nStart socio-bloodizing!</string>
+    <string name="btn_link_to_forgotpass">Forgot password? Click here</string>
+
+
 </resources>

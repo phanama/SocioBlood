@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.yudiandrean.socioblood.library.DatabaseHandler;
+import com.example.yudiandrean.socioblood.databases.DatabaseHandler;
 
 import java.util.HashMap;
 

@@ -15,15 +15,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.yudiandrean.socioblood.library.DatabaseHandler;
-import com.example.yudiandrean.socioblood.library.UserFunctions;
+import com.example.yudiandrean.socioblood.databases.DatabaseHandler;
+import com.example.yudiandrean.socioblood.databases.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;

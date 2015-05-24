@@ -1,16 +1,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
 
-    <FrameLayout android:id="@+id/feed_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+<LinearLayout android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:gravity="center"
+    android:orientation="vertical" >
 
     <TextView
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:layout_height="40dp"
-        android:id="@+id/textwelcome" android:textSize="20dp"/>
+        android:id="@+id/textwelcome"
+        android:textSize="20dp"/>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fullname"
+        android:textColor="#000000"
+        android:padding="10dp"
+        android:textSize="24dp"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -24,21 +41,10 @@
         android:layout_below="@+id/btchangepass"
         android:layout_alignParentLeft="true"/>
 
-    <TextView
-        android:layout_width="125dp"
-        android:layout_height="40dp"
-        android:id="@+id/fullname"
-        android:layout_alignParentTop="true"
-        android:textColor="#000000"
-        android:layout_toRightOf="@+id/textwelcome"
-        android:textSize="20dp"/>
-
     <Button
         android:id="@+id/btchangepass"
-        android:layout_width="300dp"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/textwelcome"
         android:layout_margin="5dp"
         android:text="Change Password"
@@ -46,15 +52,7 @@
         android:background="@drawable/btn_back"
         android:textSize="13dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:text="User Panel"
-        android:id="@+id/textView"
-        android:layout_below="@+id/logout"
-        android:layout_alignParentRight="true"
-        android:textSize="18dp"
-        android:textColor="#000000"
-        android:textAlignment="center"/>
 
+
+</LinearLayout>
 </RelativeLayout>

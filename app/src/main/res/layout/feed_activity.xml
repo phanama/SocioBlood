@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent"
+    android:padding="5dip">
+
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="465dp"
+android:orientation="vertical"
+android:weightSum="1"
+    android:id="@+id/linearLayout">
+
+<ListView
+    android:id="@+id/list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@null" />
+
+</LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="Post request..."
+        android:textSize="15dp"
+        android:layout_marginTop="20dip"
+        android:textColor="@color/input_register_bg"
+        android:background="@drawable/edit_text_holo_light"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

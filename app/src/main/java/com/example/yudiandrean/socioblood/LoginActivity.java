@@ -1,10 +1,7 @@
 package com.example.yudiandrean.socioblood;
 
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -16,23 +13,17 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import android.content.Intent;
+import com.example.yudiandrean.socioblood.databases.SessionManager;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -49,8 +40,8 @@ import java.util.List;
 import android.content.pm.Signature;
 
 
-import com.example.yudiandrean.socioblood.library.DatabaseHandler;
-import com.example.yudiandrean.socioblood.library.UserFunctions;
+import com.example.yudiandrean.socioblood.databases.DatabaseHandler;
+import com.example.yudiandrean.socioblood.databases.UserFunctions;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -65,10 +56,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.Twitter;
 import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.AppSession;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
 
 
 /**
@@ -110,9 +98,10 @@ public class LoginActivity extends Activity{
     private static String KEY_GENDER = "gender";
     private static AccessTokenTracker accessTokenTracker;
     private static ProfileTracker profileTracker;
-    private static final String TAG = "Alert:";
+    private static final String TAG = Register.class.getSimpleName();
     private static ProgressDialog pd;
     private static CallbackManager mCallbackManager;
+    private SessionManager session;
     List<String> permissionNeeds= Arrays.asList("email", "user_birthday", "user_friends", "public_profile");
 
 
@@ -153,8 +142,16 @@ public class LoginActivity extends Activity{
         loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
         loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         facebookLogin.setReadPermissions(permissionNeeds);
-
+        session = new SessionManager(getApplicationContext());
         loginErrorMsg.setText("Status: Ready");
+
+        // Check if user is already logged in or not
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(LoginActivity.this, UserPanel.class);
+            startActivity(intent);
+            finish();
+        }
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
@@ -420,19 +417,23 @@ public class LoginActivity extends Activity{
                          **/
                         UserFunctions logout = new UserFunctions();
                         logout.logoutUser(getApplicationContext());
-                        db.addUser(json_user.getString(KEY_FULLNAME),json_user.getString(KEY_EMAIL),json_user.getString(KEY_USERNAME),json_user.getString(KEY_UID),json_user.getString(KEY_CREATED_AT), json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS));
+                        db.addUser(json_user.getString(KEY_FULLNAME), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS));
                         /**
                          *If JSON array details are stored in SQlite it launches the User Panel.
                          **/
-                        Intent upanel = new Intent(getApplicationContext(), MainActivity.class);
-                        upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        session.setLogin(true);
+//                        session.setCurrentUser(Integer.parseInt(json_user.getString(KEY_UID)));
+                        Intent feed = new Intent(getApplicationContext(), UserPanel.class);
+                        feed.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         pDialog.dismiss();
-                        startActivity(upanel);
+                        startActivity(feed);
                         /**
                          * Close Login Screen
                          **/
                         finish();
-                    }else{
+
+                    }
+                    else{
 
                         pDialog.dismiss();
                         loginErrorMsg.setText("Incorrect username/password");
