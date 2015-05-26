@@ -34,7 +34,7 @@ public class Tweet{
 	@SerializedName("user")
 	private User User;
 
-	@SerializedName("name")
+	@SerializedName("screen_name")
 	private String name;
 
 	private String urlImagemPerfil;

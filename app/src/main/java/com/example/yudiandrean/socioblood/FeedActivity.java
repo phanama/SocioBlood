@@ -4,7 +4,11 @@ package com.example.yudiandrean.socioblood;
  * Created by yudiandrean on 5/24/2015.
  */
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +20,23 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.AndroidRuntimeException;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -44,9 +56,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.yudiandrean.socioblood.Twitter.TwitterActivity;
 import com.example.yudiandrean.socioblood.Views.SpinnerAdapter;
 import com.example.yudiandrean.socioblood.Views.SpinnerItem;
+import com.example.yudiandrean.socioblood.databases.DatabaseHandler;
 import com.example.yudiandrean.socioblood.databases.SessionManager;
+import com.example.yudiandrean.socioblood.databases.UserFunctions;
 import com.example.yudiandrean.socioblood.feeds.FeedController;
 import com.example.yudiandrean.socioblood.feeds.FeedItem;
 import com.example.yudiandrean.socioblood.feeds.FeedListAdapter;
@@ -56,7 +71,8 @@ public class FeedActivity extends Activity {
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
-    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
+//    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
+private String URL_FEED = "http://10.5.118.249:8080/socioblood/read_post.php";
     private TextView postrequest; //edittext for post request
     final Context context = this;
 
@@ -71,11 +87,15 @@ public class FeedActivity extends Activity {
 
 
 
+
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        final Dialog d = new Dialog(context);
         setContentView(R.layout.feed_activity);
         postrequest = (TextView) findViewById(R.id.editText);
 
@@ -115,19 +135,23 @@ public class FeedActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                final Dialog d = new Dialog(FeedActivity.this);
-                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.post_request);
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(d.getWindow().getAttributes());
-                lp.width = width;
-                lp.height = height;
-                d.getWindow().setAttributes(lp);
 
-                Button btnpost = (Button) d.findViewById(R.id.post);
-                EditText userInput = (EditText) d.findViewById(R.id.editTextDialogUserInput);
+                try {
+                    d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    d.setContentView(R.layout.post_request);
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(d.getWindow().getAttributes());
+                    lp.width = width;
+                    lp.height = height;
+                    d.getWindow().setAttributes(lp);
+                } catch (AndroidRuntimeException e) {
+                } catch (Exception e) {
+                }
 
-                Spinner rhesusspinner = (Spinner) d.findViewById(R.id.rhesus_spinner);
+                Toast.makeText(getApplicationContext(),
+                        "Ini : " + session.currentUID(), Toast.LENGTH_SHORT).show();
+
+                final Spinner rhesusspinner = (Spinner) d.findViewById(R.id.rhesus_spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(FeedActivity.this, android.R.layout.simple_spinner_dropdown_item) {
 
                     @Override
@@ -135,8 +159,8 @@ public class FeedActivity extends Activity {
 
                         View v = super.getView(position, convertView, parent);
                         if (position == getCount()) {
-                            ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                            ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                            ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                            ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                         }
 
                         return v;
@@ -144,7 +168,7 @@ public class FeedActivity extends Activity {
 
                     @Override
                     public int getCount() {
-                        return super.getCount()-1; // you dont display last item. It is used as hint.
+                        return super.getCount() - 1; // you dont display last item. It is used as hint.
                     }
 
                 };
@@ -158,8 +182,7 @@ public class FeedActivity extends Activity {
                 rhesusspinner.setSelection(adapter.getCount()); //display hint
 
 
-
-                Spinner bloodspinner = (Spinner) d.findViewById(R.id.bloodtype_spinner);
+                final Spinner bloodspinner = (Spinner) d.findViewById(R.id.bloodtype_spinner);
                 ArrayAdapter<String> bloodadapter = new ArrayAdapter<String>(FeedActivity.this, android.R.layout.simple_spinner_dropdown_item) {
 
                     @Override
@@ -167,8 +190,8 @@ public class FeedActivity extends Activity {
 
                         View v = super.getView(position, convertView, parent);
                         if (position == getCount()) {
-                            ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                            ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                            ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                            ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                         }
 
                         return v;
@@ -176,7 +199,7 @@ public class FeedActivity extends Activity {
 
                     @Override
                     public int getCount() {
-                        return super.getCount()-1; // you dont display last item. It is used as hint.
+                        return super.getCount() - 1; // you dont display last item. It is used as hint.
                     }
 
                 };
@@ -192,106 +215,386 @@ public class FeedActivity extends Activity {
                 bloodspinner.setSelection(bloodadapter.getCount()); //display hint
 
 
-                btnpost.setOnClickListener(new View.OnClickListener()
-                {
+                //Buttons-Editexts
+                Button btnpost = (Button) d.findViewById(R.id.post);
+                final EditText userInput = (EditText) d.findViewById(R.id.editTextDialogUserInput);
+
+                d.show();
+
+                btnpost.setOnClickListener(new View.OnClickListener() {
                                                @Override
-                                               public void onClick(View v)
-                                               {
-                                                   Toast.makeText(getApplicationContext(),
-                                                           "Clicked", Toast.LENGTH_SHORT).show();
+                                               public void onClick(View view) {
+                                                   if (bloodspinner.getSelectedItem().toString().equals("Desired Type")) {
+                                                       Toast.makeText(getApplicationContext(),
+                                                               "Input Blood Type!", Toast.LENGTH_SHORT).show();
+                                                   } else if (rhesusspinner.getSelectedItem().toString().equals("Rhesus")) {
+                                                       Toast.makeText(getApplicationContext(),
+                                                               "Input Rhesus!", Toast.LENGTH_SHORT).show();
+                                                   } else if (userInput.getText().toString().equals("")) {
+                                                       Toast.makeText(getApplicationContext(),
+                                                               "Input your request message!", Toast.LENGTH_SHORT).show();
+                                                   } else {
+                                                       Toast.makeText(getApplicationContext(),
+                                                               "Clicked", Toast.LENGTH_SHORT).show();
+                                                       int uid = session.currentUID();
+                                                       Toast.makeText(getApplicationContext(),
+                                                               "Ini : " + uid, Toast.LENGTH_SHORT).show();
+
+                                                       String message = userInput.getText().toString();
+                                                       String post_bloodtype = bloodspinner.getSelectedItem().toString();
+                                                       String post_rhesus = rhesusspinner.getSelectedItem().toString();
+
+                                                       NetAsync(d, view, uid, message, post_bloodtype, post_rhesus);
+
+
+                                                   }
                                                }
                                            }
                 );
 
 
-
-                d.show();
             }
         });
 
-        // We first check for cached request
-        Cache cache = FeedController.getInstance().getRequestQueue().getCache();
-        Entry entry = cache.get(URL_FEED);
-        if (entry != null) {
-            // fetch the data from cache
-            try {
-                String data = new String(entry.data, "UTF-8");
-                try {
-                    parseJsonFeed(new JSONObject(data));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
 
-        } else {
-            // making fresh volley request and getting json
-            JsonObjectRequest jsonReq = new JsonObjectRequest(Method.GET,
-                    URL_FEED, null, new Response.Listener<JSONObject>() {
+//        // We first check for cached request
+//        Cache cache = FeedController.getInstance().getRequestQueue().getCache();
+//        Entry entry = cache.get(URL_FEED);
+//        if (entry != null) {
+//            // fetch the data from cache
+//            try {
+//                String data = new String(entry.data, "UTF-8");
+//                try {
+//                    parseJsonFeed(new JSONObject(data));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//
+//        } else {
+        // making fresh volley request and getting json
 
-                @Override
-                public void onResponse(JSONObject response) {
-                    VolleyLog.d(TAG, "Response: " + response.toString());
-                    if (response != null) {
-                        parseJsonFeed(response);
-                    }
-                }
-            }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d(TAG, "Error: " + error.getMessage());
-                }
-            });
-
-            // Adding request to volley request queue
-            FeedController.getInstance().addToRequestQueue(jsonReq);
-        }
-
+getTimeline();
     }
+
+public void getTimeline()
+{
+    JsonObjectRequest jsonReq = new JsonObjectRequest(Method.GET,
+            URL_FEED, null, new Response.Listener<JSONObject>() {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            Log.d(TAG, "Response: " + response.toString());
+            if (response != null) {
+                parseJsonFeed(response);
+            }
+        }
+    }, new Response.ErrorListener() {
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.d(TAG, "Error: " + error.getMessage());
+        }
+    });
+
+    // Adding request to volley request queue
+    FeedController.getInstance().addToRequestQueue(jsonReq);
+
+    listAdapter.notifyDataSetChanged();
+
+}
+
+    public void reload() {
+
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
 
     /**
      * Parsing json reponse and passing the data to feed view list adapter
      * */
     private void parseJsonFeed(JSONObject response) {
         try {
-            JSONArray feedArray = response.getJSONArray("feed");
+            JSONArray feedArray = response.getJSONArray("post");
 
-            for (int i = 0; i < feedArray.length(); i++) {
+            for (int i = feedArray.length()-1; i >= 0 ; i--) {
                 JSONObject feedObj = (JSONObject) feedArray.get(i);
 
                 FeedItem item = new FeedItem();
-                item.setId(feedObj.getInt("id"));
-                item.setName(feedObj.getString("name"));
+                item.setId(feedObj.getInt("p_id"));
+                item.setName(feedObj.getString("fullname"));
+                item.setUserName(feedObj.getString("username"));
 
                 // Image might be null sometimes
-                String image = feedObj.isNull("image") ? null : feedObj
-                        .getString("image");
-                item.setImge(image);
-                item.setStatus(feedObj.getString("status"));
-                item.setProfilePic(feedObj.getString("profilePic"));
-                item.setTimeStamp(feedObj.getString("timeStamp"));
+//                String image = feedObj.isNull("image") ? null : feedObj
+//                        .getString("image");
+//                item.setImge(image);
 
-                // url might be null sometimes
-                String feedUrl = feedObj.isNull("url") ? null : feedObj
-                        .getString("url");
-                item.setUrl(feedUrl);
+                item.setStatus(feedObj.getString("message"));
+//
+//                 //may be null
+//                String imaget = feedObj.isNull("profilePic") ? null : feedObj
+//                        .getString("profilePic");
+//                item.setProfilePic(feedObj.getString(imaget));
+
+                item.setTimeStamp(feedObj.getString("posted_at"));
+
+//                // url might be null sometimes
+//                String feedUrl = feedObj.isNull("url") ? null : feedObj
+//                        .getString("url");
+//                item.setUrl(feedUrl);
+
+                item.setBloodtype(feedObj.getString("post_bloodtype"));
+                item.setRhesus(feedObj.getString("post_rhesus"));
+
+                item.setUserBloodtype(feedObj.getString("blood_type"));
+                item.setUserRhesus(feedObj.getString("rhesus"));
 
                 feedItems.add(item);
+
             }
 
             // notify data changes to list adapater
             listAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
+        } catch (JSONException e)
+        {
             e.printStackTrace();
         }
     }
 
+
+
+    private class NetCheck extends AsyncTask<String,String,Boolean>
+    {
+        private ProgressDialog nDialog;
+        private View view;
+        int uid;
+        String message, post_bloodtype, post_rhesus;
+        Dialog d;
+
+        public NetCheck(Dialog d, View view, int uid,String message,String post_bloodtype,String post_rhesus) {
+            this.view = view;
+            this.uid = uid;
+            this.message = message;
+            this.post_bloodtype=post_bloodtype;
+            this.post_rhesus=post_rhesus;
+            this.d = d;
+
+        }
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            nDialog = new ProgressDialog(FeedActivity.this);
+            nDialog.setMessage("Loading..");
+            nDialog.setTitle("Checking Network");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(true);
+            nDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args){
+
+
+/**
+ * Gets current device state and checks for working internet connection by trying Google.
+ **/
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnected()) {
+                try {
+                    URL url = new URL("http://www.google.com");
+                    HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                    urlc.setConnectTimeout(3000);
+                    urlc.connect();
+                    if (urlc.getResponseCode() == 200) {
+                        return true;
+                    }
+                } catch (MalformedURLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            return false;
+
+        }
+        @Override
+        protected void onPostExecute(Boolean th){
+
+            if(th == true){
+                nDialog.dismiss();
+                ProcessPost post = new ProcessPost(d, view, uid, message, post_bloodtype,post_rhesus);
+                post.execute();
+            }
+            else{
+                nDialog.dismiss();
+                Toast.makeText(getApplicationContext(),
+                        "Error in internet connection!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
+
+
+
+    private class ProcessPost extends AsyncTask<String, String, JSONObject> {
+
+        /**
+         * Defining Process dialog
+         **/
+        private ProgressDialog pDialog;
+        private View view;
+        Dialog d;
+
+
+
+        String message,post_bloodtype,post_rhesus;
+        int uid;
+
+        public ProcessPost(Dialog d, View view, int uid,String message,String post_bloodtype,String post_rhesus) {
+            this.view = view;
+            this.uid = uid;
+            this.message = message;
+            this.post_bloodtype=post_bloodtype;
+            this.post_rhesus=post_rhesus;
+            this.d = d;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(FeedActivity.this);
+            pDialog.setTitle("Contacting Servers");
+            pDialog.setMessage("Posting ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... args) {
+
+
+            UserFunctions userFunction = new UserFunctions();
+            JSONObject json = userFunction.addPost(uid, message, post_bloodtype, post_rhesus);
+
+            return json;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            /**
+             * Checks for success message.
+             **/
+            try {
+                if (json.getString(KEY_SUCCESS) != null) {
+
+                    String res = json.getString(KEY_SUCCESS);
+                    String red = json.getString(KEY_ERROR);
+
+                    if(Integer.parseInt(res) == 1){
+                        pDialog.dismiss();
+                        d.dismiss();
+
+                        Toast.makeText(getApplicationContext(),
+                                "Post Success!", Toast.LENGTH_SHORT).show();
+                        getTimeline();
+                        getTimeline();
+                    }
+
+                    else if (Integer.parseInt(red) ==2){
+                        pDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),
+                                "Posting failed!", Toast.LENGTH_SHORT).show();
+                    }
+
+            }
+
+
+                else{
+                    pDialog.dismiss();
+
+                    Toast.makeText(getApplicationContext(),
+                            "Error occured in posting", Toast.LENGTH_SHORT).show();
+                }
+
+                onCreate(null);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+
+
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }}
+
+
+
+
+
+
+    public void NetAsync(Dialog d,View view, int uid, String message, String post_bloodtype, String post_rhesus){
+        NetCheck check = new NetCheck(d, view, uid, message, post_bloodtype,post_rhesus);
+        check.execute();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check if user is already logged in or not
+        if (!session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(FeedActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_twitter:
+                Intent intentTweet = new Intent(this, TwitterActivity.class);
+                startActivity(intentTweet);
+                return true;
+            case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.user_panel:
+                Intent intentUserPanel = new Intent(this, UserPanel.class);
+                startActivity(intentUserPanel);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

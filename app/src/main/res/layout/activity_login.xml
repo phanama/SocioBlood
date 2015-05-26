@@ -99,6 +99,7 @@
                 android:layout_marginTop="10dip"
                 />
 
+<!--
             <com.facebook.login.widget.LoginButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,6 +109,7 @@
                 android:textColor="#ffffffff"
                 android:layout_marginTop="10dip"
                 android:layout_below="@+id/passres"/>
+-->
 
             <Button
 
@@ -132,11 +134,6 @@
                 android:textColor="@color/dark"
                 android:textSize="15dp" />
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="56dp"
-                android:id="@+id/loginErrorMsg"
-                android:textColor="#000000"/>
 
 
         </LinearLayout>

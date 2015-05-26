@@ -15,12 +15,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yudiandrean.socioblood.Twitter.TwitterActivity;
 import com.example.yudiandrean.socioblood.databases.SessionManager;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -42,16 +45,16 @@ import android.content.pm.Signature;
 
 import com.example.yudiandrean.socioblood.databases.DatabaseHandler;
 import com.example.yudiandrean.socioblood.databases.UserFunctions;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
+//import com.facebook.AccessToken;
+//import com.facebook.AccessTokenTracker;
+//import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
+//import com.facebook.Profile;
+//import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+//import com.facebook.login.widget.LoginButton;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.Twitter;
 import io.fabric.sdk.android.Fabric;
@@ -74,8 +77,7 @@ public class LoginActivity extends Activity{
     Button passreset;
     EditText inputEmail;
     EditText inputPassword;
-    LoginButton facebookLogin;
-    private TextView loginErrorMsg;
+  //  LoginButton facebookLogin;
     private TwitterLoginButton loginButton;
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "uLY62iV2Gyc0FYin6RMede2ph";
@@ -96,11 +98,11 @@ public class LoginActivity extends Activity{
     private static String KEY_BLOOD_TYPE = "blood_type";
     private static String KEY_RHESUS = "rhesus";
     private static String KEY_GENDER = "gender";
-    private static AccessTokenTracker accessTokenTracker;
-    private static ProfileTracker profileTracker;
+    //private static AccessTokenTracker accessTokenTracker;
+    //private static ProfileTracker profileTracker;
     private static final String TAG = Register.class.getSimpleName();
     private static ProgressDialog pd;
-    private static CallbackManager mCallbackManager;
+    //private static CallbackManager mCallbackManager;
     private SessionManager session;
     List<String> permissionNeeds= Arrays.asList("email", "user_birthday", "user_friends", "public_profile");
 
@@ -114,7 +116,7 @@ public class LoginActivity extends Activity{
         Fabric.with(this, new Twitter(authConfig));
 
 
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        //FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.activity_login);
 
         try {
@@ -131,45 +133,44 @@ public class LoginActivity extends Activity{
         }
 
         //instantiate callbacks manager
-        mCallbackManager = CallbackManager.Factory.create();
+        //mCallbackManager = CallbackManager.Factory.create();
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
         Btnregister = (Button) findViewById(R.id.registerbtn);
         btnLogin = (Button) findViewById(R.id.login);
         passreset = (Button) findViewById(R.id.passres);
-        facebookLogin = (LoginButton) findViewById(R.id.facebook_login);
-        loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
+//        facebookLogin = (LoginButton) findViewById(R.id.facebook_login);
         loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
-        facebookLogin.setReadPermissions(permissionNeeds);
+        //facebookLogin.setReadPermissions(permissionNeeds);
+
         session = new SessionManager(getApplicationContext());
-        loginErrorMsg.setText("Status: Ready");
 
         // Check if user is already logged in or not
         if (session.isLoggedIn()) {
             // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, UserPanel.class);
+            Intent intent = new Intent(LoginActivity.this, FeedActivity.class);
             startActivity(intent);
             finish();
         }
 
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-                // App code
-            }
-        };
-
-        profileTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                // App code
-            }
-        };
+//        accessTokenTracker = new AccessTokenTracker() {
+//            @Override
+//            protected void onCurrentAccessTokenChanged(
+//                    AccessToken oldAccessToken,
+//                    AccessToken currentAccessToken) {
+//                // App code
+//            }
+//        };
+//
+//        profileTracker = new ProfileTracker() {
+//            @Override
+//            protected void onCurrentProfileChanged(
+//                    Profile oldProfile,
+//                    Profile currentProfile) {
+//                // App code
+//            }
+//        };
 
 
 
@@ -215,31 +216,32 @@ public class LoginActivity extends Activity{
         });
 
 
-        //facebook login
-        facebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-
-
-            @Override
-            public void onSuccess(LoginResult loginResults) {
-                //login ok  get access token
-                AccessToken.getCurrentAccessToken();
-
-
-            }
-
-            @Override
-            public void onCancel() {
-
-                loginErrorMsg.setText("Status: Login Cancelled");
-            }
-
-
-            @Override
-            public void onError(FacebookException e) {
-                loginErrorMsg.setText("Status: Login Failed");
-
-            }
-        });
+//        //facebook login
+//        facebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//
+//
+//            @Override
+//            public void onSuccess(LoginResult loginResults) {
+//                //login ok  get access token
+//                AccessToken.getCurrentAccessToken();
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//                Toast.makeText(getApplicationContext(),
+//                        "Login Cancelled", Toast.LENGTH_SHORT).show();
+//            }
+//
+//
+//            @Override
+//            public void onError(FacebookException e) {
+//                Toast.makeText(getApplicationContext(),
+//                        "Login Failed!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         //twitter login
         loginButton.setCallback(new Callback<TwitterSession>() {
@@ -252,13 +254,15 @@ public class LoginActivity extends Activity{
                         "\nAuth Token Received: " +
                         result.data.getAuthToken().token;
 
-                loginErrorMsg.setText(output);
+                Toast.makeText(getApplicationContext(),
+                        output, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void failure(TwitterException exception) {
                 // Do something on failure
-                loginErrorMsg.setText("Status: Login Failed");
+                Toast.makeText(getApplicationContext(),
+                        "Login failed!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -292,7 +296,7 @@ public class LoginActivity extends Activity{
 
         super.onActivityResult(requestCode, resultCode, data);
         //manage login result
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        //mCallbackManager.onActivityResult(requestCode, resultCode, data);
         loginButton.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -300,8 +304,8 @@ public class LoginActivity extends Activity{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        accessTokenTracker.stopTracking();
-        profileTracker.stopTracking();
+      //  accessTokenTracker.stopTracking();
+       // profileTracker.stopTracking();
     }
     /**
      * Async Task to check whether internet connection is working.
@@ -361,7 +365,8 @@ public class LoginActivity extends Activity{
         }
         else{
             nDialog.dismiss();
-            loginErrorMsg.setText("Error in Network Connection");
+            Toast.makeText(getApplicationContext(),
+                    "Error in internet connection!", Toast.LENGTH_SHORT).show();
         }
     }
 }
@@ -422,8 +427,10 @@ public class LoginActivity extends Activity{
                          *If JSON array details are stored in SQlite it launches the User Panel.
                          **/
                         session.setLogin(true);
+                        session.setCurrentUser(Integer.parseInt(json_user.getString(KEY_UID)));
+
 //                        session.setCurrentUser(Integer.parseInt(json_user.getString(KEY_UID)));
-                        Intent feed = new Intent(getApplicationContext(), UserPanel.class);
+                        Intent feed = new Intent(getApplicationContext(), FeedActivity.class);
                         feed.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         pDialog.dismiss();
                         startActivity(feed);
@@ -436,7 +443,8 @@ public class LoginActivity extends Activity{
                     else{
 
                         pDialog.dismiss();
-                        loginErrorMsg.setText("Incorrect username/password");
+                        Toast.makeText(getApplicationContext(),
+                                "Incorrect username/password", Toast.LENGTH_SHORT).show();
                     }
                 }
             } catch (JSONException e) {
@@ -449,7 +457,31 @@ public class LoginActivity extends Activity{
         new NetCheck().execute();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_twitter:
+                Intent intentTweet = new Intent(this, TwitterActivity.class);
+                startActivity(intentTweet);
+                return true;
+            case R.id.action_about:
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.user_panel:
+                Intent intentUserPanel = new Intent(this, UserPanel.class);
+                startActivity(intentUserPanel);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 

@@ -2,6 +2,7 @@ package com.example.yudiandrean.socioblood.Twitter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -11,7 +12,10 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.yudiandrean.socioblood.LoginActivity;
 import com.example.yudiandrean.socioblood.R;
+import com.example.yudiandrean.socioblood.UserPanel;
+import com.example.yudiandrean.socioblood.databases.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,9 +33,10 @@ import java.util.ArrayList;
  */
 public class TwitterActivity extends Activity {
 
-	final static String ScreenName = "faridprasaja";
+	final static String ScreenName = "Blood4LifeID";
 	final static String LOG_TAG = "rnc";
 	private ListView listView;
+	private SessionManager session;
 	ArrayList<Tweet> tweets = new ArrayList<>();
 
 	@Override
@@ -41,6 +46,18 @@ public class TwitterActivity extends Activity {
 		listView = (ListView) findViewById(R.id.tweet_list);
 
 		getTwitter();
+
+		session = new SessionManager(getApplicationContext());
+
+		// Check if user is already logged in or not
+		if (!session.isLoggedIn()) {
+			// User is already logged in. Take him to main activity
+			Intent intent = new Intent(TwitterActivity.this, LoginActivity.class);
+			Toast.makeText(getApplicationContext(),
+					"Login first!", Toast.LENGTH_SHORT).show();
+			startActivity(intent);
+			finish();
+		}
 
 	}
 
@@ -167,7 +184,7 @@ public class TwitterActivity extends Activity {
 					jsonObject = (JSONObject) jsonArray.get(i);
 					Tweet tweet = new Tweet();
 
-					tweet.setName(jsonObject.getJSONObject("user").toString());
+					tweet.setName(jsonObject.getJSONObject("user").getString("screen_name"));
 					tweet.setUrlImagemPerfil(jsonObject.getJSONObject("user").getString("profile_image_url_https"));
 					tweet.setText(jsonObject.getString("text"));
 

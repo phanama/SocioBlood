@@ -9,9 +9,15 @@
         android:visible="true" />
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_twitter"
         android:orderInCategory="100"
         android:enabled="true"
         android:visible="true"
-        android:title="@string/action_settings"/>
+        android:title="Blood4Life Tweets"/>
+
+    <item android:id="@+id/user_panel"
+        android:title="Logout"
+        android:orderInCategory="100"
+        android:enabled="true"
+        android:visible="true" />
 </menu>

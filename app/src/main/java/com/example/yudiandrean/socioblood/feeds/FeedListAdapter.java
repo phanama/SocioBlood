@@ -31,7 +31,8 @@ public class FeedListAdapter extends BaseAdapter {
     private List<FeedItem> feedItems;
     ImageLoader imageLoader = FeedController.getInstance().getImageLoader();
 
-    public FeedListAdapter(Activity activity, List<FeedItem> feedItems) {
+    public FeedListAdapter(Activity activity, List<FeedItem> feedItems)
+    {
         this.activity = activity;
         this.feedItems = feedItems;
     }
@@ -64,11 +65,17 @@ public class FeedListAdapter extends BaseAdapter {
             imageLoader = FeedController.getInstance().getImageLoader();
 
         TextView name = (TextView) convertView.findViewById(R.id.name);
+        TextView username = (TextView) convertView.findViewById(R.id.username);
         TextView timestamp = (TextView) convertView
                 .findViewById(R.id.timestamp);
+        TextView blood_type = (TextView) convertView
+                .findViewById(R.id.blood_type);
         TextView statusMsg = (TextView) convertView
                 .findViewById(R.id.txtStatusMsg);
+        TextView post_bloodtype = (TextView) convertView
+                .findViewById(R.id.post_bloodtype);
         TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
+
         NetworkImageView profilePic = (NetworkImageView) convertView
                 .findViewById(R.id.profilePic);
         FeedImageView feedImageView = (FeedImageView) convertView
@@ -77,12 +84,18 @@ public class FeedListAdapter extends BaseAdapter {
         FeedItem item = feedItems.get(position);
 
         name.setText(item.getName());
+        username.setText(item.getUserName());
+        timestamp.setText(item.getTimeStamp());
+        blood_type.setText(item.getUserBloodtype() + item.getUserRhesus());
+
 
         // Converting timestamp into x ago format
-        CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
-                Long.parseLong(item.getTimeStamp()),
-                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
-        timestamp.setText(timeAgo);
+//        CharSequence timeAgo = DateUtils.getRelativeTimeSpanString(
+//                Long.parseLong(item.getTimeStamp()),
+//                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+//        timestamp.setText(timeAgo);
+
+
 
         // Chcek for empty status message
         if (!TextUtils.isEmpty(item.getStatus())) {
@@ -92,6 +105,9 @@ public class FeedListAdapter extends BaseAdapter {
             // status is empty, remove from view
             statusMsg.setVisibility(View.GONE);
         }
+
+        post_bloodtype.setText("Bloodtype needed : " +item.getBloodtype()+item.getRhesus());
+
 
         // Checking for null feed url
         if (item.getUrl() != null) {
@@ -106,8 +122,17 @@ public class FeedListAdapter extends BaseAdapter {
             url.setVisibility(View.GONE);
         }
 
-        // user profile pic
-        profilePic.setImageUrl(item.getProfilePic(), imageLoader);
+
+        // Checking for null user profile pic
+        if (item.getProfilePic() != null) {
+            profilePic.setImageUrl(item.getProfilePic(), imageLoader);
+
+            profilePic.setVisibility(View.VISIBLE);
+        } else {
+            // profilePic is null, remove from the view
+            profilePic.setVisibility(View.GONE);
+        }
+
 
         // Feed image
         if (item.getImge() != null) {

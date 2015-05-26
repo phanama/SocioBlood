@@ -231,6 +231,7 @@ public class Register extends Activity {
                                 "Username should be minimum 5 characters", Toast.LENGTH_SHORT).show();
                     }
                 }
+
                 else
                 {
                     Toast.makeText(getApplicationContext(),

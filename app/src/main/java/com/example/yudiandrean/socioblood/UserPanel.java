@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yudiandrean.socioblood.databases.SessionManager;
 import com.example.yudiandrean.socioblood.databases.UserFunctions;
@@ -41,7 +42,18 @@ public class UserPanel extends Activity {
         changepas = (Button) findViewById(R.id.btchangepass);
         btnLogout = (Button) findViewById(R.id.logout);
         // session manager
+
         session = new SessionManager(getApplicationContext());
+
+        // Check if user is already logged in or not
+        if (!session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(UserPanel.this, LoginActivity.class);
+            Toast.makeText(getApplicationContext(),
+                    "Login first!", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            finish();
+        }
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(

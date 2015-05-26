@@ -25,9 +25,10 @@
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/profilePic"
-                android:layout_width="@dimen/feed_item_profile_pic"
-                android:layout_height="@dimen/feed_item_profile_pic"
-                android:scaleType="fitCenter" >
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:scaleType="fitCenter"
+                android:layout_gravity="top">
             </com.android.volley.toolbox.NetworkImageView>
 
             <LinearLayout
@@ -36,12 +37,28 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/feed_item_profile_info_padd" >
 
-                <TextView
-                    android:id="@+id/name"
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:textSize="@dimen/feed_item_profile_name"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="left"
+                    android:layout_weight="0.2" />
+
+               <TextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/feed_item_profile_name"
+                android:textStyle="normal"
+                   android:layout_weight="0.4" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/timestamp"
@@ -49,8 +66,24 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/timestamp"
                     android:textSize="@dimen/feed_item_timestamp" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/blood_type"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/timestamp"
+                        android:textSize="@dimen/feed_item_timestamp"
+                        android:layout_gravity="left"
+                        android:layout_weight="0.2" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/txtStatusMsg"
@@ -60,6 +93,25 @@
             android:paddingLeft="@dimen/feed_item_status_pad_left_right"
             android:paddingRight="@dimen/feed_item_status_pad_left_right"
             android:paddingTop="@dimen/feed_item_status_pad_top" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/feed_item_padding_left_right"
+            android:paddingRight="@dimen/feed_item_padding_left_right" >
+
+        <TextView
+            android:id="@+id/post_bloodtype"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:linksClickable="false"
+            android:paddingBottom="10dp"
+            android:textColorLink="@color/link"
+            android:layout_gravity="left"
+            android:layout_weight="0.3" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtUrl"
@@ -79,5 +131,6 @@
             android:scaleType="fitXY"
             android:visibility="visible" />
     </LinearLayout>
+
 
 </LinearLayout>

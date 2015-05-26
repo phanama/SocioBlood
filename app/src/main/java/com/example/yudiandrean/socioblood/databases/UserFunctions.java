@@ -105,6 +105,18 @@ public class UserFunctions {
         return json;
     }
 
+    public JSONObject addPost(int uid, String message, String post_bloodtype, String post_rhesus){
+        // Building Parameters
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("tag", post_tag));
+        params.add(new BasicNameValuePair("uid", Integer.toString(uid)));
+        params.add(new BasicNameValuePair("message", message));
+        params.add(new BasicNameValuePair("post_bloodtype", post_bloodtype));
+        params.add(new BasicNameValuePair("post_rhesus", post_rhesus));
+        JSONObject json = jsonParser.getJSONFromUrl(postURL,params);
+        return json;
+    }
+
 
 
     /**
