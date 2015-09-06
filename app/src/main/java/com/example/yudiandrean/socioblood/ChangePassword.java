@@ -60,7 +60,7 @@ public class ChangePassword extends Activity{
         cancel.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0){
 
-                Intent login = new Intent(getApplicationContext(), MainActivity.class);
+                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
 
                 startActivity(login);
                 finish();

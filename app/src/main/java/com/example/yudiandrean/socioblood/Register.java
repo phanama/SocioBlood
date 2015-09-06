@@ -343,7 +343,6 @@ public class Register extends Activity {
 
             return json;
 
-
         }
 
         @Override
@@ -357,6 +356,8 @@ public class Register extends Activity {
                     String res = json.getString(KEY_SUCCESS);
 
                     String red = json.getString(KEY_ERROR);
+
+
 
                     if(Integer.parseInt(res) == 1){
                         pDialog.setTitle("Getting Data");
@@ -416,6 +417,12 @@ public class Register extends Activity {
 
 
             }
+            catch (NullPointerException e){
+                pDialog.dismiss();
+                registerErrorMsg.setText("Server Error, Contact Your Customer Service");}
+            catch (Exception e){
+                pDialog.dismiss();
+                registerErrorMsg.setText("Server Error, Contact Your Customer Service");}
         }}
     public void NetAsync(View view){
         new NetCheck().execute();

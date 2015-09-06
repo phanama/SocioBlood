@@ -42,7 +42,7 @@ public class TwitterActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.tweet_list);
 		listView = (ListView) findViewById(R.id.tweet_list);
 
 		getTwitter();

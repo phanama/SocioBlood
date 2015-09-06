@@ -19,12 +19,12 @@ public class UserFunctions {
     private JSONParser jsonParser;
 
     //URL of the PHP API
-    private static String loginURL = "http://10.5.118.249:8080/socioblood/";
-    private static String registerURL = "http://10.5.118.249:8080/socioblood/";
-    private static String forpassURL = "http://10.5.118.249:8080/socioblood/";
-    private static String chgpassURL = "http://10.5.118.249:8080/socioblood/";
-    private static String postURL = "http://10.5.118.249:8080/socioblood/";
-    private static String viewTimelineURL = "http://10.5.118.249:8080/socioblood/";
+    private static String loginURL = "http://api.socioblood.com";
+    private static String registerURL = "http://api.socioblood.com";
+    private static String forpassURL = "http://api.socioblood.com";
+    private static String chgpassURL = "http://api.socioblood.com";
+    private static String postURL = "http://api.socioblood.com";
+    private static String viewTimelineURL = "http://api.socioblood.com";
 
 
     private static String login_tag = "login";

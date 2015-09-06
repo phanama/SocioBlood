@@ -20,15 +20,14 @@
         android:layout_height="wrap_content"
         android:text="Type Your Message : "
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:paddingStart="7dp" />
+         />
 
     <EditText
         android:id="@+id/editTextDialogUserInput"
         android:layout_width="match_parent"
         android:layout_height="414dp"
-        android:editable="true"
         android:hint="Request message..."
-        android:gravity="top|left">
+        android:gravity="top|start">
 
         <requestFocus />
 

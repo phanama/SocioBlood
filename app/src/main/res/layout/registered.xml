@@ -38,12 +38,11 @@
 
             <TextView
                 android:id="@+id/fullname"
-                android:layout_width="240dp"
-                android:layout_alignParentRight="true"
+                android:layout_width="220dp"
                 android:layout_alignParentEnd="true"
                 android:layout_height="40dp"
                 android:layout_below="@+id/textView"
-                android:layout_alignRight="@+id/textView2"
+                android:layout_alignEnd="@+id/textView2"
                 android:textColor="#000000"
                 android:textSize="20sp"/>
 
@@ -59,7 +58,7 @@
                 android:layout_below="@+id/textView2" />
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -80,7 +79,7 @@
                 android:layout_below="@+id/textView3" />
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -104,7 +103,7 @@
                 android:layout_below="@+id/textView4" />
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -126,7 +125,7 @@
                 android:layout_below="@+id/textView6" />
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -148,7 +147,7 @@
                 android:layout_below="@+id/textView7" />
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
@@ -172,7 +171,7 @@
 
 
             <TextView
-                android:layout_width="240dp"
+                android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"

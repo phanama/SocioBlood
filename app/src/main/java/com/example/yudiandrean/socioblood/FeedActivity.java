@@ -54,7 +54,6 @@ import com.android.volley.Cache.Entry;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.yudiandrean.socioblood.Twitter.TwitterActivity;
 import com.example.yudiandrean.socioblood.Views.SpinnerAdapter;
@@ -65,6 +64,8 @@ import com.example.yudiandrean.socioblood.databases.UserFunctions;
 import com.example.yudiandrean.socioblood.feeds.FeedController;
 import com.example.yudiandrean.socioblood.feeds.FeedItem;
 import com.example.yudiandrean.socioblood.feeds.FeedListAdapter;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterSession;
 
 public class FeedActivity extends Activity {
     private static final String TAG = FeedActivity.class.getSimpleName();
@@ -72,7 +73,7 @@ public class FeedActivity extends Activity {
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
 //    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
-private String URL_FEED = "http://10.5.118.249:8080/socioblood/read_post.php";
+private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
     private TextView postrequest; //edittext for post request
     final Context context = this;
 
@@ -148,8 +149,6 @@ private String URL_FEED = "http://10.5.118.249:8080/socioblood/read_post.php";
                 } catch (Exception e) {
                 }
 
-                Toast.makeText(getApplicationContext(),
-                        "Ini : " + session.currentUID(), Toast.LENGTH_SHORT).show();
 
                 final Spinner rhesusspinner = (Spinner) d.findViewById(R.id.rhesus_spinner);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(FeedActivity.this, android.R.layout.simple_spinner_dropdown_item) {
@@ -237,8 +236,6 @@ private String URL_FEED = "http://10.5.118.249:8080/socioblood/read_post.php";
                                                        Toast.makeText(getApplicationContext(),
                                                                "Clicked", Toast.LENGTH_SHORT).show();
                                                        int uid = session.currentUID();
-                                                       Toast.makeText(getApplicationContext(),
-                                                               "Ini : " + uid, Toast.LENGTH_SHORT).show();
 
                                                        String message = userInput.getText().toString();
                                                        String post_bloodtype = bloodspinner.getSelectedItem().toString();
@@ -306,16 +303,6 @@ public void getTimeline()
 
 }
 
-    public void reload() {
-
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-    }
 
 
     /**
@@ -349,7 +336,7 @@ public void getTimeline()
 
 //                // url might be null sometimes
 //                String feedUrl = feedObj.isNull("url") ? null : feedObj
-//                        .getString("url");
+//                        .getString("url");ifcon
 //                item.setUrl(feedUrl);
 
                 item.setBloodtype(feedObj.getString("post_bloodtype"));
@@ -581,9 +568,11 @@ public void getTimeline()
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_twitter:
-                Intent intentTweet = new Intent(this, TwitterActivity.class);
-                startActivity(intentTweet);
-                return true;
+
+                    Intent intentTweet = new Intent(this, TwitterActivity.class);
+                    startActivity(intentTweet);
+                    return true;
+
             case R.id.action_about:
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);

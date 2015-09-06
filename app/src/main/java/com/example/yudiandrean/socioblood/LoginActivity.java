@@ -57,9 +57,10 @@ import com.facebook.login.LoginResult;
 //import com.facebook.login.widget.LoginButton;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.Twitter;
-import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.TwitterCore;
+
+import io.fabric.sdk.android.Fabric;
 
 
 /**
@@ -78,10 +79,8 @@ public class LoginActivity extends Activity{
     EditText inputEmail;
     EditText inputPassword;
   //  LoginButton facebookLogin;
-    private TwitterLoginButton loginButton;
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "uLY62iV2Gyc0FYin6RMede2ph";
-    private static final String TWITTER_SECRET = "ixs5d15ExnJageamXjIw787Cw7iOnOy34y5Vjb3uTfmYfPC3ZD";
+
+
 
 
 
@@ -98,6 +97,8 @@ public class LoginActivity extends Activity{
     private static String KEY_BLOOD_TYPE = "blood_type";
     private static String KEY_RHESUS = "rhesus";
     private static String KEY_GENDER = "gender";
+    private static final String TWITTER_KEY = "uLY62iV2Gyc0FYin6RMede2ph";
+    private static final String TWITTER_SECRET = "ixs5d15ExnJageamXjIw787Cw7iOnOy34y5Vjb3uTfmYfPC3ZD";
     //private static AccessTokenTracker accessTokenTracker;
     //private static ProfileTracker profileTracker;
     private static final String TAG = Register.class.getSimpleName();
@@ -112,8 +113,7 @@ public class LoginActivity extends Activity{
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+
 
 
         //FacebookSdk.sdkInitialize(this.getApplicationContext());
@@ -132,6 +132,8 @@ public class LoginActivity extends Activity{
         } catch (NoSuchAlgorithmException e) {
         }
 
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
         //instantiate callbacks manager
         //mCallbackManager = CallbackManager.Factory.create();
 
@@ -141,7 +143,6 @@ public class LoginActivity extends Activity{
         btnLogin = (Button) findViewById(R.id.login);
         passreset = (Button) findViewById(R.id.passres);
 //        facebookLogin = (LoginButton) findViewById(R.id.facebook_login);
-        loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         //facebookLogin.setReadPermissions(permissionNeeds);
 
         session = new SessionManager(getApplicationContext());
@@ -243,28 +244,7 @@ public class LoginActivity extends Activity{
 //            }
 //        });
 
-        //twitter login
-        loginButton.setCallback(new Callback<TwitterSession>() {
-            @Override
-            public void success(Result<TwitterSession> result) {
-                // Do something with result, which provides a TwitterSession for making API calls
-                String output = "Status: " +
-                        "Your login was successful " +
-                        result.data.getUserName() +
-                        "\nAuth Token Received: " +
-                        result.data.getAuthToken().token;
 
-                Toast.makeText(getApplicationContext(),
-                        output, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                // Do something on failure
-                Toast.makeText(getApplicationContext(),
-                        "Login failed!", Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
         //Session Manager
@@ -288,17 +268,9 @@ public class LoginActivity extends Activity{
             }
         });
 
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, data);
-        //manage login result
-        //mCallbackManager.onActivityResult(requestCode, resultCode, data);
-        loginButton.onActivityResult(requestCode, resultCode, data);
-    }
 
 
     @Override
@@ -337,7 +309,7 @@ public class LoginActivity extends Activity{
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnected()) {
         try {
-            URL url = new URL("http://www.google.com");
+            URL url = new URL("https://www.google.co.id");
             HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
             urlc.setConnectTimeout(3000);
             urlc.connect();
@@ -467,9 +439,13 @@ public class LoginActivity extends Activity{
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_twitter:
-                Intent intentTweet = new Intent(this, TwitterActivity.class);
-                startActivity(intentTweet);
-                return true;
+
+
+                    Intent intentTweet = new Intent(this, TwitterActivity.class);
+                    startActivity(intentTweet);
+                    return true;
+
+
             case R.id.action_about:
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);

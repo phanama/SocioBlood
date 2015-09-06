@@ -29,6 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static String KEY_UID = "uid";
     private static String KEY_USERNAME = "username";
     private static String KEY_FULLNAME = "fullname";
+
     private static String KEY_EMAIL = "email";
     private static String KEY_CREATED_AT = "created_at";
     private static String KEY_BLOOD_TYPE = "blood_type";

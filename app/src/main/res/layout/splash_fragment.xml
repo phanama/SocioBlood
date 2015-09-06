@@ -14,9 +14,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_impeller_wb"
             android:id="@+id/splashImage"/>
@@ -27,7 +24,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=" SocioBlood"
             android:textColor="#ffffff"
-            android:textSize="48dp"
+            android:textSize="48sp"
             android:textIsSelectable="false"
             android:id="@+id/splashText"/>
     </LinearLayout>

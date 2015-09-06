@@ -16,7 +16,7 @@
         android:title="Blood4Life Tweets"/>
 
     <item android:id="@+id/user_panel"
-        android:title="Logout"
+        android:title="User Panel"
         android:orderInCategory="100"
         android:enabled="true"
         android:visible="true" />

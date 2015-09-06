@@ -43,7 +43,7 @@ public class Registered extends Activity {
         final TextView gender = (TextView)findViewById(R.id.gender);
         final TextView created_at = (TextView)findViewById(R.id.registeredat);
         fullname.setText(user.get("fullname"));
-        uname.setText(user.get("username"));
+        uname.setText(user.get("uname"));
         email.setText(user.get("email"));
         bloodtype.setText(user.get("blood_type"));
         rhesus.setText(user.get("rhesus"));
