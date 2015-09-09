@@ -1,5 +1,26 @@
 package com.example.yudiandrean.socioblood;
 
+/**
+ * Created by yudiandrean on 15/7/2015.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ */
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -64,13 +85,15 @@ import io.fabric.sdk.android.Fabric;
 
 
 /**
- * A login screen that offers login via email/password and via Facebook sign in.
+ * A login screen that offers login via email/password.
  * <p/>
  * ************ IMPORTANT SETUP NOTES: ************
  * In order for Google+ sign in to work with your app, you must first go to:
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
+
+
 public class LoginActivity extends Activity{
 
     Button btnLogin;
@@ -385,7 +408,7 @@ public class LoginActivity extends Activity{
 
                     String res = json.getString(KEY_SUCCESS);
 
-                    if(Integer.parseInt(res) == 1){
+                    if(Integer.parseInt(res) == 1) {
                         pDialog.setMessage("Loading User Space");
                         pDialog.setTitle("Getting Data");
                         DatabaseHandler db = new DatabaseHandler(getApplicationContext());

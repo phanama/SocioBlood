@@ -2,6 +2,23 @@ package com.example.yudiandrean.socioblood;
 
 /**
  * Created by yudiandrean on 5/24/2015.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
  */
 
 import java.io.IOException;
@@ -32,6 +49,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.Menu;
@@ -67,13 +86,13 @@ import com.example.yudiandrean.socioblood.feeds.FeedListAdapter;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterSession;
 
-public class FeedActivity extends Activity {
+public class FeedActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = FeedActivity.class.getSimpleName();
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
 //    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
-private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
+    private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
     private TextView postrequest; //edittext for post request
     final Context context = this;
 
@@ -85,8 +104,7 @@ private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
     private static String KEY_RHESUS = "post_rhesus";
     private static String KEY_ERROR = "error";
     private SessionManager session;
-
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
 
@@ -99,6 +117,7 @@ private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
         final Dialog d = new Dialog(context);
         setContentView(R.layout.feed_activity);
         postrequest = (TextView) findViewById(R.id.editText);
+
 
         WindowManager manager = (WindowManager) getSystemService(Activity.WINDOW_SERVICE);
         final int width, height;
@@ -126,10 +145,13 @@ private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
         }
 
         listView = (ListView) findViewById(R.id.list);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         feedItems = new ArrayList<FeedItem>();
 
         listAdapter = new FeedListAdapter(this, feedItems);
         listView.setAdapter(listAdapter);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         // add button listener
         postrequest.setOnClickListener(new View.OnClickListener() {
@@ -273,11 +295,41 @@ private String URL_FEED = "http://www.socioblood.com/socioblood/read_post.php";
 //        } else {
         // making fresh volley request and getting json
 
-getTimeline();
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        swipeRefreshLayout.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        swipeRefreshLayout.setRefreshing(true);
+                                        getTimelineAsync();
+                                    }
+                                }
+        );
+
     }
 
-public void getTimeline()
+
+    /**
+     * This method is called when swipe refresh is pulled down
+     */
+    @Override
+    public void onRefresh() {
+        getTimelineAsync();
+
+    }
+
+    //Fetch the timeline by requesting http
+public void getTimelineAsync()
 {
+    listAdapter.clearAdapter();
+
+    // showing refresh animation before making http call
+    swipeRefreshLayout.setRefreshing(true);
+
+    //Volley's json array request object
     JsonObjectRequest jsonReq = new JsonObjectRequest(Method.GET,
             URL_FEED, null, new Response.Listener<JSONObject>() {
 
@@ -286,13 +338,19 @@ public void getTimeline()
             Log.d(TAG, "Response: " + response.toString());
             if (response != null) {
                 parseJsonFeed(response);
+                listAdapter.notifyDataSetChanged();
             }
+            // stopping swipe refresh
+            swipeRefreshLayout.setRefreshing(false);
         }
     }, new Response.ErrorListener() {
 
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.d(TAG, "Error: " + error.getMessage());
+            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            // stopping swipe refresh
+            swipeRefreshLayout.setRefreshing(false);
         }
     });
 
@@ -501,8 +559,8 @@ public void getTimeline()
 
                         Toast.makeText(getApplicationContext(),
                                 "Post Success!", Toast.LENGTH_SHORT).show();
-                        getTimeline();
-                        getTimeline();
+                        getTimelineAsync();
+                        getTimelineAsync();
                     }
 
                     else if (Integer.parseInt(red) ==2){
