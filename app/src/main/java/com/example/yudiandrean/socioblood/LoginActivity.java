@@ -91,7 +91,8 @@ public class LoginActivity extends Activity{
     private static String KEY_SUCCESS = "success";
     private static String KEY_UID = "uid";
     private static String KEY_USERNAME = "username";
-    private static String KEY_FULLNAME = "fullname";
+    private static String KEY_FIRSTNAME = "firstname";
+    private static String KEY_LASTNAME = "lastname";
     private static String KEY_EMAIL = "email";
     private static String KEY_CREATED_AT = "created_at";
     private static String KEY_BLOOD_TYPE = "blood_type";
@@ -331,7 +332,7 @@ public class LoginActivity extends Activity{
     @Override
     protected void onPostExecute(Boolean th){
 
-        if(th == true){
+        if(th){
             nDialog.dismiss();
             new ProcessLogin().execute();
         }
@@ -394,7 +395,7 @@ public class LoginActivity extends Activity{
                          **/
                         UserFunctions logout = new UserFunctions();
                         logout.logoutUser(getApplicationContext());
-                        db.addUser(json_user.getString(KEY_FULLNAME), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS));
+                        db.addUser(json_user.getString(KEY_FIRSTNAME),json_user.getString(KEY_LASTNAME), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT), json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS));
                         /**
                          *If JSON array details are stored in SQlite it launches the User Panel.
                          **/

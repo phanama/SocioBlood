@@ -19,12 +19,11 @@ public class UserFunctions {
     private JSONParser jsonParser;
 
     //URL of the PHP API
-    private static String loginURL = "http://api.socioblood.com";
-    private static String registerURL = "http://api.socioblood.com";
-    private static String forpassURL = "http://api.socioblood.com";
-    private static String chgpassURL = "http://api.socioblood.com";
-    private static String postURL = "http://api.socioblood.com";
-    private static String viewTimelineURL = "http://api.socioblood.com";
+    private static String loginURL = "http://www.socioblood.com/socioblood/index.php";
+    private static String registerURL = "http://www.socioblood.com/socioblood/index.php";
+    private static String forpassURL = "http://www.socioblood.com/socioblood/index.php";
+    private static String chgpassURL = "http://www.socioblood.com/socioblood/index.php";
+    private static String postURL = "http://www.socioblood.com/socioblood/index.php";
 
 
     private static String login_tag = "login";
@@ -90,11 +89,12 @@ public class UserFunctions {
      /**
       * Function to  Register
       **/
-    public JSONObject registerUser(String fullname, String username, String email, String password, String gender, String blood_type, String rhesus){
+    public JSONObject registerUser(String firstname,String lastname, String username, String email, String password, String gender, String blood_type, String rhesus){
         // Building Parameters
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("tag", register_tag));
-        params.add(new BasicNameValuePair("fullname", fullname));
+        params.add(new BasicNameValuePair("firstname", firstname));
+        params.add(new BasicNameValuePair("lastname", lastname));
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
@@ -116,8 +116,6 @@ public class UserFunctions {
         JSONObject json = jsonParser.getJSONFromUrl(postURL,params);
         return json;
     }
-
-
 
     /**
      * Function to logout user

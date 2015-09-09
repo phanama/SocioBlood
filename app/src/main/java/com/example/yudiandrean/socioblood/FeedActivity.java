@@ -317,7 +317,8 @@ public void getTimeline()
 
                 FeedItem item = new FeedItem();
                 item.setId(feedObj.getInt("p_id"));
-                item.setName(feedObj.getString("fullname"));
+                String items = feedObj.getString("firstname") + " " + feedObj.getString("lastname") ;
+                item.setName(items);
                 item.setUserName(feedObj.getString("username"));
 
                 // Image might be null sometimes
@@ -399,7 +400,7 @@ public void getTimeline()
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    URL url = new URL("http://www.google.com");
+                    URL url = new URL("https://www.google.com");
                     HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                     urlc.setConnectTimeout(3000);
                     urlc.connect();

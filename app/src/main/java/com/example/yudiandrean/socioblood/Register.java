@@ -41,7 +41,8 @@ public class Register extends Activity {
 
     private static String KEY_SUCCESS = "success";
     private static String KEY_UID = "uid";
-    private static String KEY_FULLNAME = "fullname";
+    private static String KEY_FIRSTNAME = "firstname";
+    private static String KEY_LASTNAME = "lastname";
     private static String KEY_USERNAME = "username";
     private static String KEY_EMAIL = "email";
     private static String KEY_CREATED_AT = "created_at";
@@ -55,7 +56,8 @@ public class Register extends Activity {
      * Defining layout items.
      **/
 
-    EditText inputFullName;
+    EditText inputFirstName;
+    EditText inputLastName;
     EditText inputUsername;
     EditText inputEmail;
     EditText inputPassword;
@@ -78,7 +80,8 @@ public class Register extends Activity {
         /**
          * Defining all layout items
          **/
-        inputFullName = (EditText) findViewById(R.id.fullname);
+        inputFirstName = (EditText) findViewById(R.id.firstname);
+        inputLastName = (EditText) findViewById(R.id.lastname);
         inputUsername = (EditText) findViewById(R.id.username);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -87,6 +90,7 @@ public class Register extends Activity {
 
         //Blood type spinner
         inputBloodType = (Spinner) findViewById(R.id.bloodtype_spinner);
+
         ArrayAdapter<String> bloodadapter = new ArrayAdapter<String>(Register.this, android.R.layout.simple_spinner_dropdown_item) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -198,13 +202,13 @@ public class Register extends Activity {
 
         login = (Button) findViewById(R.id.bktologin);
         login.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
-                startActivityForResult(myIntent, 0);
-                finish();
-            }
+                                     public void onClick(View view) {
+                                         Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
+                                         startActivityForResult(myIntent, 0);
+                                         finish();
+                                     }
 
-        }
+                                 }
         );
 
         /**
@@ -218,7 +222,7 @@ public class Register extends Activity {
             @Override
             public void onClick(View view) {
 
-                if (  ( !inputUsername.getText().toString().equals("")) && ( !inputPassword.getText().toString().equals("")) && ( !inputFullName.getText().toString().equals("")) &&
+                if (  ( !inputUsername.getText().toString().equals("")) && ( !inputPassword.getText().toString().equals("")) && ( !inputFirstName.getText().toString().equals("")) && ( !inputLastName.getText().toString().equals("")) &&
                          ( !inputEmail.getText().toString().equals("")) && ( !inputBloodType.getSelectedItem().toString().equals("")) && ( !inputRhesus.getSelectedItem().toString().equals("")) && ( !inputGender.getSelectedItem().toString().equals(""))  )
                 {
                     if ( inputUsername.getText().toString().length() > 4 ){
@@ -228,7 +232,7 @@ public class Register extends Activity {
                     else
                     {
                         Toast.makeText(getApplicationContext(),
-                                "Username should be minimum 5 characters", Toast.LENGTH_SHORT).show();
+                                "Username must be a minimum of 5 characters", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -270,7 +274,7 @@ public class Register extends Activity {
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    URL url = new URL("http://www.google.com");
+                    URL url = new URL("https://www.google.com");
                     HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                     urlc.setConnectTimeout(3000);
                     urlc.connect();
@@ -291,7 +295,7 @@ public class Register extends Activity {
         @Override
         protected void onPostExecute(Boolean th){
 
-            if(th == true){
+            if(th){
                 nDialog.dismiss();
                 new ProcessRegister().execute();
             }
@@ -313,13 +317,14 @@ public class Register extends Activity {
          **/
         private ProgressDialog pDialog;
 
-        String email,password,fullname,username,blood_type,gender,rhesus;
+        String email,password,firstname, lastname,username,blood_type,gender,rhesus;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             inputUsername = (EditText) findViewById(R.id.username);
             inputPassword = (EditText) findViewById(R.id.password);
-            fullname = inputFullName.getText().toString();
+            firstname = inputFirstName.getText().toString();
+            lastname = inputLastName.getText().toString();
             email = inputEmail.getText().toString();
             username= inputUsername.getText().toString();
             password = inputPassword.getText().toString();
@@ -339,7 +344,7 @@ public class Register extends Activity {
 
 
             UserFunctions userFunction = new UserFunctions();
-            JSONObject json = userFunction.registerUser(fullname, username, email,  password, gender, blood_type, rhesus);
+            JSONObject json = userFunction.registerUser(firstname, lastname, username, email,  password, gender, blood_type, rhesus);
 
             return json;
 
@@ -354,7 +359,6 @@ public class Register extends Activity {
                 if (json.getString(KEY_SUCCESS) != null) {
                     registerErrorMsg.setText("");
                     String res = json.getString(KEY_SUCCESS);
-
                     String red = json.getString(KEY_ERROR);
 
 
@@ -375,14 +379,12 @@ public class Register extends Activity {
 
                         UserFunctions logout = new UserFunctions();
                         logout.logoutUser(getApplicationContext());
-                        db.addUser(json_user.getString(KEY_FULLNAME),json_user.getString(KEY_EMAIL),json_user.getString(KEY_USERNAME),json_user.getString(KEY_UID),json_user.getString(KEY_CREATED_AT),json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS) );
+                        db.addUser(json_user.getString(KEY_FIRSTNAME), json_user.getString(KEY_LASTNAME),json_user.getString(KEY_EMAIL),json_user.getString(KEY_USERNAME),json_user.getString(KEY_UID),json_user.getString(KEY_CREATED_AT),json_user.getString(KEY_GENDER), json_user.getString(KEY_BLOOD_TYPE), json_user.getString(KEY_RHESUS) );
                         /**
                          * Stores registered data in SQlite Database
                          * Launch Registered screen
                          **/
-
                         Intent registered = new Intent(getApplicationContext(), Registered.class);
-
                         /**
                          * Close all views before launching Registered screen
                          **/
@@ -422,7 +424,7 @@ public class Register extends Activity {
                 registerErrorMsg.setText("Server Error, Contact Your Customer Service");}
             catch (Exception e){
                 pDialog.dismiss();
-                registerErrorMsg.setText("Server Error, Contact Your Customer Service");}
+                registerErrorMsg.setText("Something happened, Contact Your Customer Service");}
         }}
     public void NetAsync(View view){
         new NetCheck().execute();

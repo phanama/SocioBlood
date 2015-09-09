@@ -35,14 +35,16 @@ public class Registered extends Activity {
          * Displays the registration details in Text view
          **/
 
-        final TextView fullname = (TextView)findViewById(R.id.fullname);
+        final TextView firstname = (TextView)findViewById(R.id.firstname);
+        final TextView lastname = (TextView)findViewById(R.id.lastname);
         final TextView uname = (TextView)findViewById(R.id.username);
         final TextView email = (TextView)findViewById(R.id.email);
         final TextView bloodtype = (TextView)findViewById(R.id.bloodtype);
         final TextView rhesus = (TextView)findViewById(R.id.rhesus);
         final TextView gender = (TextView)findViewById(R.id.gender);
         final TextView created_at = (TextView)findViewById(R.id.registeredat);
-        fullname.setText(user.get("fullname"));
+        firstname.setText(user.get("firstname"));
+        lastname.setText(user.get("lastname"));
         uname.setText(user.get("uname"));
         email.setText(user.get("email"));
         bloodtype.setText(user.get("blood_type"));
