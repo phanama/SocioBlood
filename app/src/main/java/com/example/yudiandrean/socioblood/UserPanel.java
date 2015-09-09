@@ -183,7 +183,7 @@ public class UserPanel extends Activity {
  * Sets user first name and last name in text view.
  **/
         final TextView login = (TextView) findViewById(R.id.textwelcome);
-        login.setText("Welcome  "+user.get("firstname" + " " + "lastname"));
+        login.setText("Welcome  "+ user.get("firstname") + " " + user.get("lastname"));
     }
 
 

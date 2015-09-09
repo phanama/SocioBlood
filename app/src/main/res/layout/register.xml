@@ -29,6 +29,15 @@
                 android:layout_alignParentTop="true"
                 android:textColor="#000000"/>
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:id="@+id/register_error"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dip"/>
+
 
             <EditText
                 android:id="@+id/firstname"
@@ -37,8 +46,9 @@
                 android:hint="Firstname"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:layout_marginTop="10dip"
                 android:textColor="@color/input_register_bg"
-                android:layout_below="@+id/textView"
+                android:layout_below="@+id/register_error"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:textSize="18sp"
@@ -99,41 +109,10 @@
                 android:singleLine="true"
                 android:textColor="#000000"/>
 
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:text="Blood Type"
-                android:id="@+id/textView6"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/textView8" />
 
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:text="Rhesus"
-                android:id="@+id/textView7"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/textView6" />
-
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:text="Gender"
-                android:id="@+id/textView8"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/password" />
 
             <Spinner
-                android:layout_width="240dp"
+                android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:ems="10"
@@ -142,7 +121,7 @@
                 android:textColor="#000000"/>
 
             <Spinner
-                android:layout_width="240dp"
+                android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:ems="10"
@@ -151,7 +130,7 @@
                 android:textColor="#000000"/>
 
             <Spinner
-                android:layout_width="240dp"
+                android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
                 android:ems="10"
@@ -160,7 +139,7 @@
                 android:textColor="#000000"/>
 
             <Button
-                android:layout_width="150dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:text="REGISTER"
@@ -169,10 +148,10 @@
                 android:background="@drawable/btn_red_back"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dip"
-                android:layout_below="@+id/textView7"/>
+                android:layout_below="@+id/rhesus_spinner"/>
 
             <Button
-                android:layout_width="150dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
                 android:text="BACK TO LOGIN"
@@ -180,17 +159,9 @@
                 android:textSize="15sp"
                 android:background="@drawable/btn_red_back"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/textView7"
-                android:layout_marginTop="20dip"/>
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:id="@+id/register_error"
                 android:layout_below="@+id/register"
-                android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dip"/>
+
 
 
         </RelativeLayout>

@@ -255,8 +255,7 @@ public class FeedActivity extends Activity implements SwipeRefreshLayout.OnRefre
                                                        Toast.makeText(getApplicationContext(),
                                                                "Input your request message!", Toast.LENGTH_SHORT).show();
                                                    } else {
-                                                       Toast.makeText(getApplicationContext(),
-                                                               "Clicked", Toast.LENGTH_SHORT).show();
+
                                                        int uid = session.currentUID();
 
                                                        String message = userInput.getText().toString();
